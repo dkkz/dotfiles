@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# close telnet C-] & quit.
+alias starwars="telnet towel.blinkenlights.nl"
+
+# open chrome
+alias chrome='open -a /Applications/Google\ Chrome.app --args -incognito'
+
+# open firefox
+alias firefox='open -a /Applications/Firefox.app'
+
+# open safari
+alias safari='open -a /Applications/Safari.app'
+
+#alias java
+alias javac='javac -J-Dfile.encoding=UTF8'
+
+#alias diff
+alias diff='colordiff'
+
+#alias less
+alias less='less -R'
