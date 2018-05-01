@@ -11,11 +11,9 @@ Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'scrooloose/nerdtree'
 Plugin 'lilydjwg/colorizer'
-Plugin 'scrooloose/syntastic'
-Plugin 'pmsorhaindo/syntastic-local-eslint.vim'
+Plugin 'w0rp/ale'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-haml'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'tpope/vim-fugitive'
@@ -24,35 +22,49 @@ Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'thinca/vim-quickrun'
 Plugin 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
-Plugin 'kien/ctrlp.vim'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'fatih/vim-go'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+Plugin 'morhetz/gruvbox'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'leafgarland/typescript-vim'
 
 call vundle#end()
 filetype plugin indent on
 
+"vim-multiple-cursors
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+"use fuzzy finder
+set rtp+=/usr/local/opt/fzf
+
 "Airline
-set guifont=Ricty\ Regular\ for\ Powerline:h14
+set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
-let g:airline_theme = 'solarized'
+let g:airline_theme = 'gruvbox'
 let g:airline_enable_branch=1
 let g:airline_powerline_fonts = 1
-let g:airline_left_sep = 'î‚°'
-let g:airline_left_alt_sep = 'î‚±'
-let g:airline_right_sep = 'î‚²'
-let g:airline_right_alt_sep = 'î‚³'
-let g:airline_symbols.branch = 'î‚ '
-let g:airline_symbols.readonly = 'î‚¢'
-let g:airline_symbols.linenr = 'î‚¡'
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#error_symbol = ' '
+let g:airline#extensions#ale#warning_symbol = ' '
+let g:airline#extensions#ale#enabled = 1
+nmap <Tab> <Plug>AirlineSelectPrevTab
+nmap <S-Tab> <Plug>AirlineSelectNextTab
 
 "ctrlp
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
@@ -67,24 +79,32 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-"Syntactic
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = {
-  \ 'mode': 'active',
-  \ 'active_filetypes': ['html','css','javascript','json','php'],
-  \ 'passive_filetypes': ['sass','scss']
-  \}
-let g:syntastic_javascript_eslint_args = ['eslint']
-let g:syntastic_javascript_checkers = ['eslint']
-""let g:syntastic_php_checkers=['php','phpcs']
-let g:syntastic_html_tidy_exec = 'tidy5'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"ale
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'sass': ['stylelint'],
+\   'html': ['htmlhint']
+\}
+let g:ale_sign_error = ''
+let g:ale_sign_warning = ''
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 1
+let g:ale_open_list = 1
+let g:ale_warn_about_trailing_whitespace = 0
+let g:ale_pattern_options = {
+\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+\ '\.min\.html$': {'ale_linters': [], 'ale_fixers': []},
+\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
+\}
+let g:ale_sign_error = ''
+let g:ale_sign_warning = ''
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 "Tern
 let g:tern_map_keys=1
@@ -141,21 +161,15 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd vimenter * if !argc() | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-"PHP
-"highlight SQL
-let php_sql_query = 1
-"highlight Baselib method
-let php_baselib = 1
-"highlight HTML
-let php_htmlInStrings = 1
-"no highlight <?
-let php_noShortTags = 1
-let php_parent_error_close = 1
+" vim-devicons
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:webdevicons_enable_airline_statusline = 1
 
-"Solarized
+"gruvbox
 syntax on
-colorscheme solarized
+colorscheme gruvbox
 set background=dark
+let g:ligthline = { 'colorscheme': 'gruvbox' }
 
 "Setting Vim
 set ambiwidth=double
