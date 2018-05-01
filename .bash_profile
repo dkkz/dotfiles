@@ -1,8 +1,3 @@
-#Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-. ~/.bashrc
-fi
-
 #history
 HISTSIZE=3000
 
@@ -50,9 +45,3 @@ GIT_PS1_SHOWDIRTYSTATE=true
 #for change ruby version
 #for call rbenv init
 eval "$(rbenv init -)"
-
-#fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-bind "$(bind -s | grep fzf_history | sed 's/r/f/')"
-bind '"\C-r": reverse-search-history'
