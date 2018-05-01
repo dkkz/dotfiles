@@ -1,10 +1,12 @@
 # tap
+tap "homebrew/core"
+tap "homebrew/bundle"
 tap 'caskroom/cask'
-tap 'caskroom/versions'
 tap 'caskroom/fonts'
 
 # bin
 brew 'mackup'
+brew 'cmake'
 brew 'tmux'
 brew 'tree'
 brew 'mas'
@@ -17,6 +19,9 @@ brew 'tig'
 brew 'w3m'
 brew 'git'
 brew 'hub'
+brew 'bash'
+brew 'fzf'
+brew "reattach-to-user-namespace"
 
 # utils
 cask 'licecap'
@@ -41,3 +46,7 @@ cask 'visual-studio-code'
 
 # fonts
 cask 'font-source-code-pro-for-powerline'
+cask "caskroom/fonts/font-hack-nerd-font"
+
+# app store
+mas "Todoist", id: 585829637
