@@ -32,9 +32,23 @@ Plugin 'morhetz/gruvbox'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'szw/vim-tags'
 
 call vundle#end()
 filetype plugin indent on
+
+
+"tag bar
+nmap <F7> :TagbarToggle<CR>
+
+" 拡張子で読み込みタグ変更
+au BufNewFile,BufRead *.php set tags+=$HOME/.tags
+
+" vim-tags
+au BufNewFile,BufRead *.php let g:vim_tags_project_tags_command = "ctags --languages=php -f"
+
+nnoremap <C-]> g<C-]>
 
 "vim-multiple-cursors
 let g:multi_cursor_next_key='<C-n>'
@@ -83,7 +97,8 @@ let g:ctrlp_custom_ignore = {
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'sass': ['stylelint'],
-\   'html': ['htmlhint']
+\   'html': ['htmlhint'],
+\   'php': ['phpcs', 'php']
 \}
 let g:ale_sign_error = ''
 let g:ale_sign_warning = ''
@@ -105,6 +120,8 @@ let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" PSR-1,2のチェックをおこなう
+let g:ale_php_phpcs_standard = 'PSR1,PSR2'
 
 "Tern
 let g:tern_map_keys=1
@@ -173,8 +190,8 @@ let g:ligthline = { 'colorscheme': 'gruvbox' }
 
 "Setting Vim
 set ambiwidth=double
+set fileencodings=utf-8,cp932,euc-jp,sjis
 set encoding=utf8
-set fileencoding=utf-8
 set completeopt=menu,preview
 "Use mouse
 set mouse=a
@@ -221,8 +238,6 @@ set cindent
 "command-line completion like zsh
 set wildmenu
 set wildmode=list:full
-"ctags
-""set tags+=tags;$HOME
 "Disable beep and flash
 set noeb vb t_vb=
 "Auto brackets
