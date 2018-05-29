@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/local/bin/bash
 
 # close telnet C-] & quit.
 alias starwars="telnet towel.blinkenlights.nl"
