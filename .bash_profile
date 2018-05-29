@@ -10,6 +10,12 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
+# Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
 #vim
 export EDITOR=/usr/local/bin/vim
 
@@ -41,7 +47,3 @@ source /usr/local/etc/bash_completion.d/git-prompt.sh
 source /usr/local/etc/bash_completion.d/git-completion.bash
 
 GIT_PS1_SHOWDIRTYSTATE=true
-
-#for change ruby version
-#for call rbenv init
-eval "$(rbenv init -)"
