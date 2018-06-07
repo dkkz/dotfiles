@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # target path
 export RVM_DIR="$HOME/.rvm"
