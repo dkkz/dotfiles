@@ -1,14 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # target path
-export RVM_DIR="$HOME/.rvm"
 export NVM_DIR="$HOME/.nvm"
-
-# rvm and ruby stable version
-if test ! -d ~/.rvm; then
-  curl -sSL https://get.rvm.io | bash -s stable --ruby
-  [[ -s "$RVM_DIR/scripts/rvm" ]] && source "$RVM_DIR/scripts/rvm"
-fi
 
 # nvm & node.js stable version
 if test ! -d ~/.nvm; then
