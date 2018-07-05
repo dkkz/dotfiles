@@ -1,8 +1,6 @@
 #history
 HISTSIZE=3000
 
-#export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
-
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
@@ -10,21 +8,22 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
-# Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
 #vim
 export EDITOR=/usr/local/bin/vim
 
 #path
-export PATH=$PATH:/usr/local/bin:/usr/bin
-export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/bin:$PATH";
 
 # export PS1="\W \! \$ "
 export GREP_OPTIONS='--color=auto'
+
+#for change ruby version
+#for call rbenv init
+# eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/bin:$PATH"
+if which rbenv > /dev/null; then 
+    eval "$(rbenv init -)";
+fi
 
 #nvm path
 export NVM_DIR="$HOME/.nvm"
@@ -32,9 +31,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # brew cask applications location
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
-#phpbrew
-[[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
+export PATH="/usr/local/bin:$PATH"
 
 #go lang
 if [ -x "`which go`" ]; then
@@ -42,8 +39,18 @@ if [ -x "`which go`" ]; then
   export PATH=$PATH:$GOPATH/bin
 fi
 
+GIT_PS1_SHOWDIRTYSTATE=true
+
+#z
+. /usr/local/etc/profile.d/z.sh
+
+# Enable some Bash 4 features when possible:
+# * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
+# * Recursive globbing, e.g. `echo **/*.txt`
+for option in autocd globstar; do
+  shopt -s "$option" 2> /dev/null;
+done;
+
 #git complete
 source /usr/local/etc/bash_completion.d/git-prompt.sh
 source /usr/local/etc/bash_completion.d/git-completion.bash
-
-GIT_PS1_SHOWDIRTYSTATE=true
