@@ -1,0 +1,25 @@
+set surround
+
+" 検索するときに大文字小文字を区別しない
+set ignorecase
+
+" 対応する括弧を強調表示
+set showmatch
+
+" ヤンクでクリップボードにコピー
+set clipboard+=unnamed
+
+" ウィンドウの右下にまだ実行していない入力中のコマンドを表示
+set showcmd
+
+" 検索時に大文字を含んでいたら大/小を区別
+set smartcasD0
+
+" ヤンクでクリップボードにコピー
+set clipboard+=unnamed
+
+" 行をまたいで移動
+set whichwrap=b,s,h,l,<,>,[,],~
+
+" Escの2回押しでハイライト消去
+nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
