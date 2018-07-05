@@ -41,13 +41,10 @@ filetype plugin indent on
 
 "tag bar
 nmap <F7> :TagbarToggle<CR>
-
 " 拡張子で読み込みタグ変更
 au BufNewFile,BufRead *.php set tags+=$HOME/.tags
-
 " vim-tags
 au BufNewFile,BufRead *.php let g:vim_tags_project_tags_command = "ctags --languages=php -f"
-
 nnoremap <C-]> g<C-]>
 
 "vim-multiple-cursors
@@ -64,7 +61,7 @@ set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-let g:airline_symbols.space = "\ua0"
+
 let g:airline_theme = 'gruvbox'
 let g:airline_enable_branch=1
 let g:airline_powerline_fonts = 1
@@ -73,25 +70,19 @@ let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ale#error_symbol = ' '
 let g:airline#extensions#ale#warning_symbol = ' '
 let g:airline#extensions#ale#enabled = 1
 nmap <Tab> <Plug>AirlineSelectPrevTab
 nmap <S-Tab> <Plug>AirlineSelectNextTab
-
-"ctrlp
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ca'
-let g:ctrlp_user_command = 'find %s -type f'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
 
 "ale
 let g:ale_linters = {
