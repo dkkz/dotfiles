@@ -1,3 +1,4 @@
+--languages=-javascript,php
 --append=yes
 --recurse=yes
 --langmap=PHP:+.inc
