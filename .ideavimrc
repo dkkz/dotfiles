@@ -23,3 +23,6 @@ set whichwrap=b,s,h,l,<,>,[,],~
 
 " Escの2回押しでハイライト消去
 nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+
+" search on
+set incsearch

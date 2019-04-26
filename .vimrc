@@ -1,60 +1,50 @@
-"Vundle Vim
+"plug vim
 set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
+Plug 'digitaltoad/vim-pug'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'mattn/emmet-vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'lilydjwg/colorizer'
+Plug 'w0rp/ale'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-surround'
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'thinca/vim-quickrun'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mxw/vim-jsx'
+Plug 'fatih/vim-go'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --go-completer --ts-completer' }
+Plug 'morhetz/gruvbox'
+Plug 'ryanoasis/vim-devicons'
+Plug 'altercation/vim-colors-solarized'
+Plug 'leafgarland/typescript-vim'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+call plug#end()
 
-Plugin 'gmarik/Vundle.vim'
-Plugin 'digitaltoad/vim-pug'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'mattn/emmet-vim'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'scrooloose/nerdtree'
-Plugin 'lilydjwg/colorizer'
-Plugin 'w0rp/ale'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'tpope/vim-surround'
-Plugin 'othree/html5.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'thinca/vim-quickrun'
-Plugin 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'mxw/vim-jsx'
-Plugin 'fatih/vim-go'
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
-Plugin 'morhetz/gruvbox'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'szw/vim-tags'
-
-call vundle#end()
 filetype plugin indent on
 
+"vim-prettier
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
-"tag bar
-nmap <F7> :TagbarToggle<CR>
-" 拡張子で読み込みタグ変更
-au BufNewFile,BufRead *.php set tags+=$HOME/.tags
-" vim-tags
-au BufNewFile,BufRead *.php let g:vim_tags_project_tags_command = "ctags --languages=php -f"
-nnoremap <C-]> g<C-]>
 
 "vim-multiple-cursors
 let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
-
-"use fuzzy finder
-set rtp+=/usr/local/opt/fzf
 
 "Airline
 set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
@@ -88,11 +78,12 @@ nmap <S-Tab> <Plug>AirlineSelectNextTab
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'sass': ['stylelint'],
-\   'html': ['htmlhint'],
 \   'php': ['phpcs', 'php']
 \}
-let g:ale_sign_error = ''
-let g:ale_sign_warning = ''
+let g:ale_fixers = {
+\ 'javascript': ['prettier','eslint']
+\ }
+let g:ale_completion_enabled = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
@@ -114,24 +105,8 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " PSR-1,2のチェックをおこなう
 let g:ale_php_phpcs_standard = 'PSR1,PSR2'
 
-"Tern
-let g:tern_map_keys=1
-let g:tern_show_argument_hints='on_hold'
-
 "JavaScript
 let g:javascript_plugin_jsdoc = 1
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-let g:javascript_conceal_noarg_arrow_function = "🞅"
-let g:javascript_conceal_underscore_arrow_function = "🞅"
 
 "JSX
 let g:jsx_ext_required = 0
@@ -213,6 +188,7 @@ set ruler
 set number
 "Highlight match parentheses
 set showmatch
+set matchtime=1
 set smarttab
 set smartcase
 "set paste
@@ -231,6 +207,14 @@ set wildmenu
 set wildmode=list:full
 "Disable beep and flash
 set noeb vb t_vb=
+set history=1000
+
+"Do not add end of sentence \n
+set nofixeol
+
+"Auto change directory
+set autochdir
+
 "Auto brackets
 inoremap { {}<LEFT>
 inoremap [ []<LEFT>
@@ -238,12 +222,8 @@ inoremap ( ()<LEFT>
 inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 inoremap <> <><LEFT>
-"Move in the insert mode
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
 
+"Move in the insert mode
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$<Right>
 inoremap <C-d> <Del>
