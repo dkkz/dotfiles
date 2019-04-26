@@ -36,7 +36,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (color-theme-solarized emmet-mode)))
+ '(package-selected-packages
+   (quote
+    (auto-compile auto-complete color-theme-solarized emmet-mode)))
  '(vc-handled-backends nil))
 
 ;; package 管理
@@ -52,15 +54,32 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; theme
+;; emmet
 (require 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; マークアップ言語全部で使う
 (add-hook 'css-mode-hook  'emmet-mode) ;; CSSにも使う
 (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent はスペース2個
 (eval-after-load "emmet-mode"
- '(define-key emmet-mode-keymap (kbd "C-j") nil)) ;; C-j は newline のままにしておく
-  (keyboard-translate ?\C-i ?\H-i) ;;C-i と Tabの被りを回避
-  (define-key emmet-mode-keymap (kbd "H-i") 'emmet-expand-line) ;; C-i で展開
+  '(define-key emmet-mode-keymap (kbd "C-j") nil)) ;; C-j は newline のままにしておく
+(keyboard-translate ?\C-i ?\H-i) ;;C-i と Tabの被りを回避
+(define-key emmet-mode-keymap (kbd "H-i") 'emmet-expand-line) ;; C-i で展開
+(setq emmet-expand-jsx-className? t) ;; for jsx
+
 ;; theme
 (set-terminal-parameter nil 'background-mode 'dark)
 (load-theme 'solarized t) 
+
+;; Auto Complete
+;; auto-complete-config の設定ファイルを読み込む。
+(require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+(add-to-list 'ac-modes 'text-mode)         ;; text-modeでも自動的に有効にする
+(add-to-list 'ac-modes 'fundamental-mode)  ;; fundamental-mode
+(add-to-list 'ac-modes 'org-mode)
+(add-to-list 'ac-modes 'yatex-mode)
+(setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
+;; TABキーで自動補完を有効にする
+;(ac-set-trigger-key "TAB")
+;; auto-complete-mode を起動時に有効にする
+(global-auto-complete-mode t)
