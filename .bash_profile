@@ -5,8 +5,12 @@ HISTSIZE=3000
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
 for file in ~/.{path,bash_prompt,exports,aliases,functions,extra,fzf.bash}; do
+# for file in ~/.{bash_prompt,aliases,functions,fzf.bash}; do
+for file in ~/.{aliases,functions,fzf.bash}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
+
+eval "$(starship init bash)"
 
 #vim
 export EDITOR=/usr/local/bin/vim
@@ -17,17 +21,10 @@ export PATH="$HOME/bin:$PATH";
 # export PS1="\W \! \$ "
 export GREP_OPTIONS='--color=auto'
 
-#for change ruby version
-#for call rbenv init
-# eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/bin:$PATH"
-if which rbenv > /dev/null; then 
-    eval "$(rbenv init -)";
-fi
-
 #nvm path
+
 export NVM_DIR="$HOME/.nvm"
-  . "/usr/local/opt/nvm/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # brew cask applications location
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
@@ -59,3 +56,6 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+# avoid vim error - bash
+export LANG='en_US.UTF-8';
+export LC_ALL='en_US.UTF-8';

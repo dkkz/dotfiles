@@ -26,3 +26,6 @@ nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
 
 " search on
 set incsearch
+
+"Highlight search result
+set hlsearch

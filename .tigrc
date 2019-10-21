@@ -31,8 +31,20 @@ bind generic W :!git reflog
 # リポジトリのGitHubを表示
 bind generic ^ @hub browse
 
+# push
+bind main U ?git poh "%(prompt Enter push branch => )" # poh = push origin HEAD:$1
+
 # commitハッシュをコピー
 bind generic y @sh -c "echo %(commit) | pbcopy"
 
 # 選択したbranchのcompare画面
 bind branch [ @hub compare %(branch)
+
+# Ctrl-g でリフレッシュ
+bind generic <Ctrl-g> refresh
+
+# リフレッシュするタイミング
+set refresh-mode = auto
+
+# Alt-g で :toggle commit-title-graph
+bind main    <Esc>g :toggle commit-title-graph

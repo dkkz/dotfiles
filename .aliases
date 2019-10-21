@@ -20,3 +20,9 @@ alias diff='colordiff'
 
 #alias less
 alias less='less -R'
+
+#alias ls
+alias ls='ls -G'
+
+#alias ls
+alias exa='exa -ahl'

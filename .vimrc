@@ -1,7 +1,6 @@
 "plug vim
 set nocompatible
 call plug#begin('~/.vim/plugged')
-Plug 'digitaltoad/vim-pug'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
@@ -19,8 +18,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'thinca/vim-quickrun'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'mxw/vim-jsx'
-Plug 'fatih/vim-go'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --go-completer --ts-completer' }
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
@@ -28,57 +26,27 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'leafgarland/typescript-vim'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'rking/ag.vim'
+Plug 'jiangmiao/auto-pairs'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+  \ 'for': ['javascript', 'typescript', 'markdown', 'yaml'] }
 call plug#end()
 
 filetype plugin indent on
 
 "vim-prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
-
-
-"vim-multiple-cursors
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.md Prettier
 
 "Airline
 set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_theme = 'gruvbox'
-let g:airline_enable_branch=1
-let g:airline_powerline_fonts = 1
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#ale#error_symbol = ' '
-let g:airline#extensions#ale#warning_symbol = ' '
-let g:airline#extensions#ale#enabled = 1
-nmap <Tab> <Plug>AirlineSelectPrevTab
-nmap <S-Tab> <Plug>AirlineSelectNextTab
 
 "ale
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'sass': ['stylelint'],
-\   'php': ['phpcs', 'php']
+\   'sass': ['stylelint']
 \}
 let g:ale_fixers = {
 \ 'javascript': ['prettier','eslint']
@@ -102,8 +70,6 @@ let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-" PSR-1,2のチェックをおこなう
-let g:ale_php_phpcs_standard = 'PSR1,PSR2'
 
 "JavaScript
 let g:javascript_plugin_jsdoc = 1
@@ -117,12 +83,6 @@ augroup VimCSS3Syntax
 
   autocmd FileType css setlocal iskeyword+=-
 augroup END
-
-"css complete
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-
-"html complete
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 
 "Vim-fugitive
 autocmd QuickFixCmdPost *grep* cwindow
@@ -139,10 +99,10 @@ let g:indent_guides_guide_size=1
 let g:user_emmet_expandabbr_key='<c-t>'
 
 "NERD tree
-autocmd vimenter * NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd vimenter * if !argc() | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" autocmd vimenter * NERDTree
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd vimenter * if !argc() | NERDTree | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " vim-devicons
 let g:webdevicons_conceal_nerdtree_brackets = 1
@@ -199,7 +159,10 @@ set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m,%f
 set grepprg=grep\ -nh
 ""for xterm, screen
 set ttymouse=xterm2
-nnoremap <ESC><ESC> :nohlsearch<CR>
+
+"for slow scroll change regex engine
+set regexpengine=1
+
 "if() indent
 set cindent
 "command-line completion like zsh
@@ -215,13 +178,8 @@ set nofixeol
 "Auto change directory
 set autochdir
 
-"Auto brackets
-inoremap { {}<LEFT>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
-inoremap <> <><LEFT>
+"set path
+set path+=**
 
 "Move in the insert mode
 inoremap <C-a> <C-o>^
@@ -230,3 +188,30 @@ inoremap <C-d> <Del>
 inoremap <C-k> <C-o>D<Right>
 inoremap <C-u> <C-o>d^
 inoremap <C-w> <C-o>db
+
+"Move to new cursor
+noremap <C-i> <C-i>
+
+"shortcut for buffer moving
+nnoremap <silent> <C-j> :bprev<CR>
+nnoremap <silent> <C-k> :bnext<CR>
+
+"Clear highlight of search
+nnoremap <ESC><ESC> :nohlsearch<CR>
+
+" newtrw
+"ls -la
+" let g:netrw_liststyle=1
+" "close header
+" let g:netrw_banner=0
+" "list style
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+" let g:netrw_winsize = 15
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+" use preview
+let g:netrw_preview=1

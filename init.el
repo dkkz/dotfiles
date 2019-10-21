@@ -38,8 +38,15 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (auto-compile auto-complete color-theme-solarized emmet-mode)))
+    (rainbow-delimiters auto-compile auto-complete color-theme-solarized emmet-mode)))
  '(vc-handled-backends nil))
+
+;; rainbow-delimiters
+
+; (require 'cl-lib)
+; (require 'color)
+;(require 'rainbow-delimiters)
+; (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; package 管理
 (require 'package)
