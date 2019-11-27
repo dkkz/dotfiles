@@ -29,3 +29,51 @@ set incsearch
 
 "Highlight search result
 set hlsearch
+
+" Reload
+nnoremap <space>re :source ~/.ideavimrc<cr>
+
+" Build & Run
+nnoremap <space>rr :action Run<cr>
+nnoremap <space>cc :action CleanGradleProject<cr>
+
+" Debug
+nnoremap <space>dd :action Debug<cr>
+nnoremap <space>tb :action ToggleLineBreakpoint<cr>
+nnoremap <space>only :action CloseAllEditorsButActive<cr>
+nnoremap <space>clear :action CloseAllEditors<cr>
+
+" Window
+nnoremap <space>sp :action SplitVertically<cr>
+nnoremap <space>hsp :action SplitHorizontally<cr>
+nnoremap <space>vsp :action SplitVertically<cr>
+
+" Git
+nnoremap <space>lh :action LocalHistory.ShowHistory<cr>
+nnoremap <space>vc :action Vcs.Show.Local.Changes<cr>
+nnoremap <space>vp :action Vcs.QuickListPopupAction<cr>
+nnoremap <space>va :action Annotate<cr>
+nnoremap <space>vl :action Vcs.Show.Log<cr>
+nnoremap <space>cv :action Compare.LastVersion<cr>
+
+" Refactor
+nnoremap <space>rq :action Refactorings.QuickListPopupAction<cr>
+nnoremap <space>rc :action ReformatCode<cr>
+nnoremap <space>ic :action InspectCode<cr>
+nnoremap <space>em :action ExtractMethod<cr>
+nnoremap <space>rn :action RenameElement<cr>
+nnoremap <space>rf :action RenameFile<cr>
+nnoremap <space>iv :action IntroduceVariable<cr>
+nnoremap <space>ex :action ExtractSuperclass<cr>
+nnoremap <space>ai :action Inline<cr>
+
+" Tool
+nnoremap <space>fp :action FindInPath<cr>
+nnoremap <space>fu :action FindUsages<cr>
+nnoremap <space>su :action ShowUsages<cr>
+nnoremap <space>ga :action GotoAction<cr>
+nnoremap <space>sh :action ActivateTerminalToolWindow<cr>
+nnoremap <space>td :action ActivateTODOToolWindow<cr>
+nnoremap <space>dp :action QuickList.Deployment<cr>
+nnoremap [e :action GotoNextError<cr>
+nnoremap ]e :action GotoPreviousError<cr>

@@ -17,16 +17,18 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'thinca/vim-quickrun'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mxw/vim-jsx'
+Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --go-completer --ts-completer' }
-Plug 'morhetz/gruvbox'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'kaicataldo/material.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'altercation/vim-colors-solarized'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'rking/ag.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'jremmen/vim-ripgrep'
 Plug 'jiangmiao/auto-pairs'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
@@ -42,6 +44,50 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.md Prettier
 "Airline
 set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 let g:airline#extensions#tabline#enabled = 1
+
+"Coc 
+set hidden
+set nobackup
+set nowritebackup
+set updatetime=300
+set redrawtime=10000
+
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-json',
+  \ ]
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Activation based on file type
+" augroup rainbow_lisp
+"   autocmd!
+"   autocmd FileType scheme RainbowParentheses
+" augroup END
+" au VimEnter * RainbowParentheses!!
+
+let g:rainbow#max_level = 16
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 
 "ale
 let g:ale_linters = {
@@ -108,11 +154,17 @@ let g:user_emmet_expandabbr_key='<c-t>'
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:webdevicons_enable_airline_statusline = 1
 
-"gruvbox
 syntax on
-colorscheme gruvbox
+
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 set background=dark
-let g:ligthline = { 'colorscheme': 'gruvbox' }
+let g:material_theme_style = 'palenight'
+colorscheme material
 
 "Setting Vim
 set ambiwidth=double
@@ -180,6 +232,11 @@ set autochdir
 
 "set path
 set path+=**
+
+"leader key
+let mapleader = "\<Space>"
+"open file
+nnoremap <Leader>o :FZF<CR>
 
 "Move in the insert mode
 inoremap <C-a> <C-o>^
