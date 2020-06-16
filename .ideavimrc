@@ -43,11 +43,6 @@ nnoremap <space>tb :action ToggleLineBreakpoint<cr>
 nnoremap <space>only :action CloseAllEditorsButActive<cr>
 nnoremap <space>clear :action CloseAllEditors<cr>
 
-" Window
-nnoremap <space>sp :action SplitVertically<cr>
-nnoremap <space>hsp :action SplitHorizontally<cr>
-nnoremap <space>vsp :action SplitVertically<cr>
-
 " Git
 nnoremap <space>lh :action LocalHistory.ShowHistory<cr>
 nnoremap <space>vc :action Vcs.Show.Local.Changes<cr>
@@ -71,7 +66,6 @@ nnoremap <space>ai :action Inline<cr>
 nnoremap <space>fp :action FindInPath<cr>
 nnoremap <space>fu :action FindUsages<cr>
 nnoremap <space>su :action ShowUsages<cr>
-nnoremap <space>ga :action GotoAction<cr>
 nnoremap <space>sh :action ActivateTerminalToolWindow<cr>
 nnoremap <space>td :action ActivateTODOToolWindow<cr>
 nnoremap <space>dp :action QuickList.Deployment<cr>

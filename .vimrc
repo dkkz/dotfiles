@@ -4,9 +4,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'lilydjwg/colorizer'
-Plug 'w0rp/ale'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 Plug 'othree/html5.vim'
@@ -17,25 +15,34 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'thinca/vim-quickrun'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kaicataldo/material.vim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'altercation/vim-colors-solarized'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'jiangmiao/auto-pairs'
+Plug 'morhetz/gruvbox'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'markdown', 'yaml'] }
+Plug 'mlaursen/vim-react-snippets'
+Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/rainbow_parentheses.vim'
 call plug#end()
 
 filetype plugin indent on
+
+augroup rainbow_lisp
+  autocmd!
+  autocmd FileType lisp,clojure,javascript,scheme RainbowParentheses
+augroup END
 
 "vim-prettier
 let g:prettier#autoformat = 0
@@ -54,10 +61,10 @@ set redrawtime=10000
 
 let g:coc_global_extensions = [
   \ 'coc-snippets',
-  \ 'coc-pairs',
+  \ 'coc-css',
   \ 'coc-tsserver',
   \ 'coc-eslint',
-  \ 'coc-prettier',
+  \ 'coc-stylelint',
   \ 'coc-json',
   \ ]
 
@@ -79,43 +86,16 @@ nmap <leader>rn <Plug>(coc-rename)
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" Activation based on file type
-" augroup rainbow_lisp
-"   autocmd!
-"   autocmd FileType scheme RainbowParentheses
-" augroup END
-" au VimEnter * RainbowParentheses!!
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
-let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-
-"ale
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'sass': ['stylelint']
-\}
-let g:ale_fixers = {
-\ 'javascript': ['prettier','eslint']
-\ }
-let g:ale_completion_enabled = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-let g:ale_sign_column_always = 1
-let g:ale_set_highlights = 1
-let g:ale_open_list = 1
-let g:ale_warn_about_trailing_whitespace = 0
-let g:ale_pattern_options = {
-\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
-\ '\.min\.html$': {'ale_linters': [], 'ale_fixers': []},
-\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-\}
-let g:ale_sign_error = ''
-let g:ale_sign_warning = ''
-let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 "JavaScript
 let g:javascript_plugin_jsdoc = 1
@@ -145,14 +125,29 @@ let g:indent_guides_guide_size=1
 let g:user_emmet_expandabbr_key='<c-t>'
 
 "NERD tree
-" autocmd vimenter * NERDTree
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd vimenter * if !argc() | NERDTree | endif
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"autocmd vimenter * NERDTree
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+
+let g:NERDTreeHighlightFolders = 1 
+let g:NERDTreeHighlightFoldersFullName = 1  
+
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeLimitedSyntax = 1
 
 " vim-devicons
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:webdevicons_enable_airline_statusline = 1
+
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
+let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+if exists('g:loaded_webdevicons')
+  call webdevicons#refresh()
+endif
 
 syntax on
 
@@ -164,7 +159,9 @@ endif
 
 set background=dark
 let g:material_theme_style = 'palenight'
+"let g:material_theme_style = 'gruvbox'
 colorscheme material
+"colorscheme gruvbox
 
 "Setting Vim
 set ambiwidth=double
@@ -245,6 +242,10 @@ inoremap <C-d> <Del>
 inoremap <C-k> <C-o>D<Right>
 inoremap <C-u> <C-o>d^
 inoremap <C-w> <C-o>db
+inoremap <C-B> <Left>
+inoremap <C-F> <Right>
+inoremap <C-n> <UP>
+inoremap <C-p> <DOWN>
 
 "Move to new cursor
 noremap <C-i> <C-i>
@@ -257,18 +258,4 @@ nnoremap <silent> <C-k> :bnext<CR>
 nnoremap <ESC><ESC> :nohlsearch<CR>
 
 " newtrw
-"ls -la
-" let g:netrw_liststyle=1
-" "close header
-" let g:netrw_banner=0
-" "list style
-" let g:netrw_liststyle = 3
-" let g:netrw_browse_split = 4
-" let g:netrw_altv = 1
-" let g:netrw_winsize = 15
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
-" use preview
 let g:netrw_preview=1

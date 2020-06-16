@@ -26,3 +26,7 @@ alias ls='ls -G'
 
 #alias ls
 alias exa='exa -ahl'
+
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
