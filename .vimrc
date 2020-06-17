@@ -52,6 +52,9 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.md Prettier
 set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 let g:airline#extensions#tabline#enabled = 1
 
+"editorconfig
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
 "Coc 
 set hidden
 set nobackup
