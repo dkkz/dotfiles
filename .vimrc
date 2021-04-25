@@ -15,8 +15,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug '/usr/local/opt/fzf'
+" Plug 'peitalin/vim-jsx-typescript'
+Plug 'maxmellon/vim-jsx-pretty'
+" Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'jiangmiao/auto-pairs'
@@ -37,6 +39,8 @@ call plug#end()
 
 filetype plugin indent on
 
+let mapleader = "\<Space>"
+
 "rainbow_parentheses
 augroup rainbow_lisp
   autocmd!
@@ -56,6 +60,13 @@ nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
 nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
 
 "Airline
+set laststatus=2
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
 set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -183,12 +194,19 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+" coc-go
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
+
 "JavaScript
 let g:javascript_plugin_jsdoc = 1
 
 "JSX
-autocmd BufNewFile,BufRead *.tsx let b:tsx_ext_found = 1
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+" autocmd BufNewFile,BufRead *.tsx let b:tsx_ext_found = 1
+" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 
 "Vim-fugitive
@@ -226,8 +244,6 @@ let $FZF_DEFAULT_OPTS="--layout=reverse"
 let $FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/**'"
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
 
-let mapleader = "\<Space>"
-
 " fzf
 nnoremap <silent> <leader>f :Files<CR>
 nnoremap <silent> <leader>g :GFiles<CR>
@@ -258,7 +274,12 @@ set background=dark
 "colorscheme dracula
 
 "Setting Vim
-set ambiwidth=double
+set textwidth=79
+set colorcolumn=+1
+" highlight ColorColumn guibg=#dc143c ctermbg=red
+highlight ColorColumn guibg=#202020 ctermbg=lightgray
+" set ambiwidth=double
+set ambiwidth=single
 set fileencodings=utf-8,cp932,euc-jp,sjis
 set encoding=utf8
 set completeopt=menu,preview
