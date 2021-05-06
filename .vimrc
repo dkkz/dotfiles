@@ -1,40 +1,46 @@
 "plug vim
 set nocompatible
 call plug#begin('~/.vim/plugged')
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'Yggdroot/indentLine'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'leafgarland/typescript-vim'
-" Plug 'peitalin/vim-jsx-typescript'
-Plug 'maxmellon/vim-jsx-pretty'
-" Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'jremmen/vim-ripgrep'
-Plug 'jiangmiao/auto-pairs'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'mlaursen/vim-react-snippets'
-Plug 'preservim/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'whatyouhide/vim-gotham'
-Plug 'joshdick/onedark.vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'morhetz/gruvbox'
-Plug 'ghifarit53/tokyonight-vim'
-Plug 'christoomey/vim-tmux-navigator'
-
+  " Tools
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-surround'
+  Plug 'Yggdroot/indentLine'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+  Plug 'jremmen/vim-ripgrep'
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'preservim/nerdtree'
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'puremourning/vimspector'
+  Plug 'vim-test/vim-test'
+  " git
+  Plug 'tpope/vim-fugitive'
+  Plug 'airblade/vim-gitgutter'
+  " JavaScript
+  Plug 'pangloss/vim-javascript'
+  Plug 'leafgarland/typescript-vim'
+  Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+  Plug 'mlaursen/vim-react-snippets'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " HTML
+  Plug 'othree/html5.vim'
+  Plug 'mattn/emmet-vim'
+  " Colors
+  Plug 'bling/vim-airline'
+  Plug 'junegunn/rainbow_parentheses.vim'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'norcalli/nvim-colorizer.lua'
+  " Theme
+  Plug 'dracula/vim', { 'as': 'dracula' }
+  Plug 'whatyouhide/vim-gotham'
+  Plug 'ghifarit53/tokyonight-vim'
+  Plug 'morhetz/gruvbox'
+  Plug 'joshdick/onedark.vim'
+  Plug 'ayu-theme/ayu-vim'
 call plug#end()
 
 filetype plugin indent on
@@ -71,7 +77,8 @@ set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
-let g:airline_theme = "gotham"
+" let g:airline_theme = "gotham"
+let g:airline_theme = "ayu"
 
 "editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
@@ -92,22 +99,23 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ ]
 
-" Use <c-space> to trigger completion.
+"" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use `[g` and `]g` to navigate diagnostics
+"" Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" Remap keys for gotos
+"" Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-" Remap for rename current word
+
+"" Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-" Use K to show documentation in preview window
+"" Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -118,7 +126,7 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight symbol under cursor on CursorHold
+"" Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 augroup mygroup
@@ -129,25 +137,25 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
+"" Applying codeAction to the selected region.
+"" Example: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap keys for applying codeAction to the current buffer.
+"" Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
+"" Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Use <c-space> to trigger completion.
+"" Use <c-space> to trigger completion.
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+"" Map function and class text objects
+"" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
@@ -157,48 +165,48 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+"" Use CTRL-S for selections ranges.
+"" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" Add `:Format` command to format current buffer.
+"" Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
 
-" Add `:Fold` command to fold current buffer.
+"" Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Add `:OR` command for organize imports of the current buffer.
+"" Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
+"" Add (Neo)Vim's native statusline support.
+"" NOTE: Please see `:h coc-status` for integrations with external plugins that
+"" provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Mappings for CoCList
-" Show all diagnostics.
+"" Mappings for CoCList
+"" Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
+"" Manage extensions.
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
+"" Show commands.
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
+"" Find symbol of current document.
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
+"" Search workspace symbols.
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
+"" Do default action for next item.
 nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
+"" Do default action for previous item.
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
+"" Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-" coc-go
+"" coc-go
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 
-"JavaScript
+" JavaScript
 let g:javascript_plugin_jsdoc = 1
 
 "JSX
@@ -209,13 +217,13 @@ autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 
-"Vim-fugitive
+" Vim-fugitive
 autocmd QuickFixCmdPost *grep* cwindow
 
-"Emmet trigger
+" Emmet trigger
 let g:user_emmet_expandabbr_key='<c-t>'
 
-"NERD tree
+" NERD tree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
@@ -252,6 +260,25 @@ nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>h :History<CR>
 nnoremap <silent> <leader>r :Rg<CR>
 
+" vimspector
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+nnoremap <leader>da :call vimspector#Launch()<CR>
+nnoremap <leader>dx :call vimspector#Reset()<CR>
+
+" vim-test
+nmap <silent> tt :TestNearest<CR>
+nmap <silent> tf :TestFile<CR>
+nmap <silent> ts :TestSuite<CR>
+nmap <silent> t_ :TestLast<CR>
+nmap <silent> tv :TestVisit<CR>
+let test#strategy = "vimterminal"
+
+function! JestStrategy(cmd)
+  let testName = matchlist(a:cmd, '\v -t ''(.*)''')[1]
+  call vimspector#LaunchWithSettings( #{ configuration: 'jest', TestName: testName } )
+endfunction
+let g:test#custom_strategies = {'jest': function('JestStrategy')}
+nnoremap <leader>dd :TestNearest -strategy=jest<CR>
 
 syntax on
 
@@ -267,15 +294,20 @@ let g:tokyonight_style = 'night' " available: night, storm
 let g:tokyonight_disable_italic_comment = 1
 
 
-"colorscheme tokyonight
-"colorscheme gruvbox
-colorscheme gotham
+" colorscheme tokyonight
+" colorscheme gruvbox
+" colorscheme gotham
+" colorscheme OceanicNext
+let ayucolor="mirage"
+colorscheme ayu
+" colorscheme dracula
 set background=dark
 "colorscheme dracula
 
 "Setting Vim
 set textwidth=79
 set colorcolumn=+1
+set conceallevel=0
 " highlight ColorColumn guibg=#dc143c ctermbg=red
 highlight ColorColumn guibg=#202020 ctermbg=lightgray
 " set ambiwidth=double
@@ -345,9 +377,6 @@ set autochdir
 
 "set path
 set path+=**
-
-"open file
-nnoremap <Leader>o :FZF<CR>
 
 "increment alphabet
 set nrformats+=alpha
