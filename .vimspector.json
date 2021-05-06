@@ -1,0 +1,57 @@
+{
+  "configurations": {
+    "jest": {
+      "adapter": "vscode-node",
+      "breakpoints": {
+        "exception": {
+          "all": "N",
+          "uncaught": "N"
+        }
+      },
+      "configuration": {
+        "name": "Debug Jest Test",
+        "request": "launch",
+        "skipFiles": [
+          "<node_modules/**/*.js>"
+        ],
+        "runtimeArgs": [
+          "--inspect-brk",
+          "/Users/xxx/xxx/node_modules/.bin/jest",
+          "-c",
+          "'/Users/xxx/xxx/.jest-config/jest.config.unit.js'",
+          "-t",
+          "'${TestName}'",
+          "--",
+          "${file}"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "cwd": "${workspaceRoot}",
+        "protocol": "auto",
+        "port": 9229
+      }
+    },
+    "javascript_file": {
+      "adapter": "vscode-node",
+      "configuration": {
+        "name": "JavaScript: Current File",
+        "request": "launch",
+        "skipFiles": [
+          "<node_modules/**/*.js>"
+        ],
+        "cwd": "${fileDirname}",
+        "program": "${file}",
+        "args": [],
+        "protocol": "auto",
+        "stopOnEntry": true,
+        "externalConsole": false
+      },
+      "breakpoints": {
+        "exception": {
+          "all": "N",
+          "uncaught": "Y"
+        }
+      }
+    }
+  }
+}
