@@ -14,8 +14,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
   Plug 'ryanoasis/vim-devicons'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug 'puremourning/vimspector'
-  Plug 'vim-test/vim-test'
+  Plug 'honza/vim-snippets'
+  Plug 'SirVer/ultisnips'
   " git
   Plug 'tpope/vim-fugitive'
   Plug 'airblade/vim-gitgutter'
@@ -24,7 +24,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'leafgarland/typescript-vim'
   Plug 'maxmellon/vim-jsx-pretty'
   Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-  Plug 'mlaursen/vim-react-snippets'
+  " Plug 'mlaursen/vim-react-snippets'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " HTML
   Plug 'othree/html5.vim'
@@ -77,13 +77,14 @@ set guifont=Hack\ Bold\ Nerd\ Font\ Complete:h12
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
-" let g:airline_theme = "gotham"
-let g:airline_theme = "ayu"
+" let g:airline_theme = "gruvbox"
+let g:airline_theme = "gotham"
+" let g:airline_theme = "ayu"
 
 "editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-"Coc 
+"Coc
 set hidden
 set nobackup
 set nowritebackup
@@ -205,6 +206,37 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 "" coc-go
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
 
 " JavaScript
 let g:javascript_plugin_jsdoc = 1
@@ -228,8 +260,8 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 
-let g:NERDTreeHighlightFolders = 1 
-let g:NERDTreeHighlightFoldersFullName = 1  
+let g:NERDTreeHighlightFolders = 1
+let g:NERDTreeHighlightFoldersFullName = 1
 
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeLimitedSyntax = 1
@@ -260,25 +292,12 @@ nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>h :History<CR>
 nnoremap <silent> <leader>r :Rg<CR>
 
-" vimspector
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-nnoremap <leader>da :call vimspector#Launch()<CR>
-nnoremap <leader>dx :call vimspector#Reset()<CR>
+"Yggdroot/indentLine
+let g:indentLine_color_term = 218
+" autocmd Filetype json let g:indentLine_setConceal = 0
 
-" vim-test
-nmap <silent> tt :TestNearest<CR>
-nmap <silent> tf :TestFile<CR>
-nmap <silent> ts :TestSuite<CR>
-nmap <silent> t_ :TestLast<CR>
-nmap <silent> tv :TestVisit<CR>
-let test#strategy = "vimterminal"
-
-function! JestStrategy(cmd)
-  let testName = matchlist(a:cmd, '\v -t ''(.*)''')[1]
-  call vimspector#LaunchWithSettings( #{ configuration: 'jest', TestName: testName } )
-endfunction
-let g:test#custom_strategies = {'jest': function('JestStrategy')}
-nnoremap <leader>dd :TestNearest -strategy=jest<CR>
+" Jenkinsfile
+au BufNewFile,BufRead Jenkinsfile setf groovy
 
 syntax on
 
@@ -295,14 +314,13 @@ let g:tokyonight_disable_italic_comment = 1
 
 
 " colorscheme tokyonight
-" colorscheme gruvbox
+colorscheme gruvbox
 " colorscheme gotham
 " colorscheme OceanicNext
-let ayucolor="mirage"
-colorscheme ayu
+" let ayucolor="mirage"
+" colorscheme ayu
 " colorscheme dracula
 set background=dark
-"colorscheme dracula
 
 "Setting Vim
 set textwidth=79
@@ -373,25 +391,13 @@ set nofixeol
 set noswapfile
 
 "Auto change directory
-set autochdir
+" set autochdir
 
 "set path
 set path+=**
 
 "increment alphabet
 set nrformats+=alpha
-
-"Move in the insert mode
-inoremap <C-a> <C-o>^
-inoremap <C-e> <C-o>$<Right>
-inoremap <C-d> <Del>
-inoremap <C-k> <C-o>D<Right>
-inoremap <C-u> <C-o>d^
-inoremap <C-w> <C-o>db
-inoremap <C-B> <Left>
-inoremap <C-F> <Right>
-inoremap <C-n> <UP>
-inoremap <C-p> <DOWN>
 
 "Move to new cursor
 noremap <C-i> <C-i>
