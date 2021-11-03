@@ -96,9 +96,6 @@ export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 # github gh
 eval "$(gh completion -s zsh)"
 
-# fasd
-eval "$(fasd --init auto)"
-
 # docker buildx
 export COMPOSE_DOCKER_CLI_BUILD=1
 
@@ -162,3 +159,4 @@ if [ $(date +'%j') != $updated_at ]; then
 else
   compinit -C -i
 fi
+

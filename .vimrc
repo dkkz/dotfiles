@@ -84,7 +84,7 @@ let g:airline_theme = "gotham"
 "editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-"Coc
+"Coc 
 set hidden
 set nobackup
 set nowritebackup
@@ -260,8 +260,8 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 
-let g:NERDTreeHighlightFolders = 1
-let g:NERDTreeHighlightFoldersFullName = 1
+let g:NERDTreeHighlightFolders = 1 
+let g:NERDTreeHighlightFoldersFullName = 1  
 
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeLimitedSyntax = 1
@@ -322,12 +322,16 @@ colorscheme gruvbox
 " colorscheme dracula
 set background=dark
 
+" background transparent
+autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
+
 "Setting Vim
-set textwidth=79
-set colorcolumn=+1
-set conceallevel=0
+" set textwidth=79
+" set colorcolumn=+1
+" let g:vim_json_conceal=0
+" set conceallevel=0
 " highlight ColorColumn guibg=#dc143c ctermbg=red
-highlight ColorColumn guibg=#202020 ctermbg=lightgray
+" highlight ColorColumn guibg=#202020 ctermbg=lightgray
 " set ambiwidth=double
 set ambiwidth=single
 set fileencodings=utf-8,cp932,euc-jp,sjis
