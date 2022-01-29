@@ -12,13 +12,33 @@ fi
 #
 
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+#   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# fi
 
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+#export LANG=en_US.UTF-8
+
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+#HISTFILE=~/.cache/zsh/history
+
+source $HOME/.aliases
 
 # goss
-export GOSS_PATH=$HOME/goss-linux-amd64
+#export GOSS_PATH=$HOME/goss-linux-amd64
+export PATH=/usr/local/bin:$PATH
+export PATH=$PATH:"/opt/local/bin:/opt/local/sbin"
+
+if [ -d "/usr/local/opt/ruby/bin" ]; then
+  export PATH=/usr/local/opt/ruby/bin:$PATH
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi
+
+# mysql-client
+export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
 
 # golang
 if [ -x "`which go`" ]; then
@@ -26,15 +46,24 @@ if [ -x "`which go`" ]; then
   export PATH=$PATH:$GOPATH/bin
 fi
 
-source $HOME/.aliases
-
 # nvm
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# for tmux vim error
+export TERM="xterm-256color"
+#export TERM="screen-256color"
 
+# ITERM 
+export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# docker buildx
+export COMPOSE_DOCKER_CLI_BUILD=1
+
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"
+[ -f ~/.cargo/env ] && source ~/.cargo/env
+
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 # fzf-ghq
 function ghq-fzf() {
@@ -49,7 +78,6 @@ function ghq-fzf() {
 }
 
 zle -N ghq-fzf
-bindkey "^g" ghq-fzf
 
 # fzf-branch
 function git-branch-fzf() {
@@ -64,41 +92,14 @@ function git-branch-fzf() {
 }
 
 zle -N git-branch-fzf
-bindkey "^v" git-branch-fzf
-
-# fzf-tree
-function tree-fzf() {
-  local SELECTED_FILE=$(tree --charset=o -f | fzf --query "$LBUFFER" | tr -d '\||`|-' | xargs echo)
-
-  if [ "$SELECTED_FILE" != "" ]; then
-    BUFFER="$EDITOR $SELECTED_FILE"
-    zle accept-line
-  fi
-
-  zle reset-prompt
-}
-zle -N tree-fzf
-bindkey "^]" tree-fzf
-
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-
-# for tmux vim error
-export TERM="xterm-256color"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# ITERM 
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
-
 # github gh
 eval "$(gh completion -s zsh)"
-
-# docker buildx
-export COMPOSE_DOCKER_CLI_BUILD=1
-
 
 # fzf-tree
 function tmuxpopup() {
@@ -114,49 +115,88 @@ function tmuxpopup() {
   fi
 }
 zle -N tmuxpopup
-bindkey "^q" tmuxpopup
+
+# fzf-snippet
+function fzf-select-snippet() {
+  emulate -L zsh
+  BUFFER=$(cat ~/.snippet | fzf)
+  CURSOR=$#BUFFER
+  zle -Rc
+  zle reset-prompt
+}
+zle -N fzf-select-snippet
 
 ### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})‚Ä¶%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
 fi
 
-source "$HOME/.zinit/bin/zinit.zsh"
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-  zinit-zsh/z-a-rust \
-  zinit-zsh/z-a-as-monitor \
-  zinit-zsh/z-a-patch-dl \
-  zinit-zsh/z-a-bin-gem-node
-
-### End of Zinit's installer chunk
-
-zinit light reegnz/jq-zsh-plugin
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
 
 zinit wait lucid is-snippet as"completion" for \
-  OMZ::plugins/docker/_docker \
-  OMZ::plugins/docker-compose/_docker-compose \
+  OMZP::docker/_docker \
+  OMZP::docker-compose/_docker-compose \
+  OMZP::rust/_rust \
+  OMZP::cargo \
+  OMZP::rustup
 
-zinit snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
+zinit is-snippet for \
+  OMZL::completion.zsh \
+  OMZL::key-bindings.zsh \
+  OMZL::directories.zsh \
+  https://github.com/aws/aws-cli/blob/v2/bin/aws_zsh_completer.sh
 
 zinit cdclear -q
 
-# autoload for plugins completion
-#autoload -U dompinit && compinit -i
-# Enable autocompletions
-autoload -Uz compinit
-typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
-if [ $(date +'%j') != $updated_at ]; then
-  compinit -i
-else
-  compinit -C -i
-fi
+zinit light agkozak/zsh-z
+zinit light reegnz/jq-zsh-plugin
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
+zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
+
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:default' menu select=1 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
+
+setopt interactivecomments
+setopt AUTO_MENU
+setopt AUTO_CD
+setopt AUTO_NAME_DIRS
+setopt share_history
+setopt extended_history
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_verify
+setopt hist_reduce_blanks
+
+# bindkey -v
+# bindkey '^a' beginning-of-line
+# bindkey '^e' end-of-line
+# bindkey '^p' up-history
+# bindkey '^n' down-history
+
+# fzf
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+function zvm_after_init() {
+  bindkey "^g" ghq-fzf
+  bindkey "^v" git-branch-fzf
+  bindkey "^q" tmuxpopup
+  bindkey '^X^M' fzf-select-snippet
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+}
