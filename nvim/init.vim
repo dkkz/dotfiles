@@ -1,4 +1,3 @@
-" Fundamentals "{{{
 " ---------------------------------------------------------------------
 " init autocmd
 autocmd!
@@ -7,38 +6,36 @@ scriptencoding utf-8
 
 syntax enable
 set nocompatible
-" set number
 set fileencodings=utf-8,sjis,euc-jp
 set encoding=utf-8
 set title
 set nu
 set breakindent
 set nobackup
-set hlsearch
 set showcmd
 set cmdheight=1
-set laststatus=2
 set scrolloff=10
 set expandtab
 set noswapfile
 set noundofile
 set mouse=a
-"let loaded_matchparen = 1
 set shell=zsh
 set backupskip=/tmp/*,/private/tmp/*
 set lazyredraw
-set ttyfast
 set relativenumber
 set inccommand=nosplit
+set modifiable
+set write
+set smarttab
 
 " set textwidth=79
 " set colorcolumn=+1
 " set conceallevel=0
 set t_Co=256
 " Faster completion
-set updatetime=300                      
+set updatetime=300
 " By default timeoutlen is 1000 ms
-set timeoutlen=500                      
+set timeoutlen=500
 set exrc
 " open new split panes to right and below
 set splitright
@@ -46,8 +43,6 @@ set splitbelow
 " Description: macOS-specific configs
 " Use OSX clipboard to copy and to paste
 set clipboard+=unnamedplus
-" Copy selected text in visual mode
-"set clipboard+=autoselect
 
 " Suppress appending <PasteStart> and <PasteEnd> when pasting
 set t_BE=
@@ -57,19 +52,18 @@ set nosc noru nosm
 set lazyredraw
 set showmatch
 " How many tenths of a second to blink when matching brackets
-"set mat=2
+set mat=2
 " Ignore case when searching
 set ignorecase
 " Be smart when using tabs ;)
-set smarttab
+set smartcase
 " indents
 filetype plugin indent on
 set shiftwidth=2
 set tabstop=2
-set ai "Auto indent
 set si "Smart indent
 set nowrap "No Wrap lines
-set backspace=start,eol,indent
+" set backspace=start,eol,indent
 " Finding files - Search down into subfolders
 set path+=**
 set wildignore+=*/node_modules/*
@@ -85,7 +79,7 @@ set shortmess+=c
 highlight link CompeDocumentation NormalFloat
 
 " auto source when writing to init.vm alternatively you can run :source $MYVIMRC
-au! BufWritePost $MYVIMRC source %      
+au! BufWritePost $MYVIMRC source %
 
 "}}}
 
@@ -109,7 +103,9 @@ if &term =~ "screen"
   autocmd VimLeave * silent!  exe '!echo -n "\ek[`hostname`:`basename $PWD`]\e\\"'
 endif
 
+"au BufNewFile,BufRead *.jenkinsfile,*.Jenkinsfile,Jenkinsfile,jenkinsfile setf groovy
 "}}}
+
 
 " File types "{{{
 " JavaScript
@@ -122,10 +118,6 @@ au BufNewFile,BufRead *.md set filetype=markdown
 au BufNewFile,BufRead *.flow set filetype=javascript
 
 set suffixesadd=.js,.es,.jsx,.json,.css,.scss.sass,.styl,.php,.py,.md
-
-autocmd FileType ts setlocal shiftwidth=2 tabstop=2
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
-
 "}}}
 
 if has("nvim")
@@ -137,54 +129,64 @@ call plug#begin()
   Plug 'rafamadriz/friendly-snippets'
 
 if has ("nvim")
-  Plug 'nvim-lua/popup.nvim'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-  Plug 'nvim-telescope/telescope-fzy-native.nvim'
-  Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'romgrk/barbar.nvim'
-  Plug 'folke/todo-comments.nvim'
-  Plug 'windwp/nvim-autopairs'
-  Plug 'lukas-reineke/indent-blankline.nvim'
-  Plug 'b3nj5m1n/kommentary'
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/cmp-buffer'
-  Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'hrsh7th/cmp-path'
-  Plug 'hrsh7th/cmp-emoji'
-  Plug 'ray-x/cmp-treesitter'
-  Plug 'github/copilot.vim'
-
-  Plug 'saadparwaiz1/cmp_luasnip'
-  Plug 'L3MON4D3/LuaSnip'
-  Plug 'onsails/lspkind-nvim'
-  Plug 'tpope/vim-surround'
-  Plug 'simrat39/symbols-outline.nvim'
-  Plug 'mattn/emmet-vim'
-  Plug 'mhinz/vim-startify'
-  " LSP
-  Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-  Plug 'kabouzeid/nvim-lspinstall'
-  Plug 'folke/trouble.nvim'
-  Plug 'ray-x/lsp_signature.nvim'
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'glepnir/lspsaga.nvim'
-  Plug 'folke/lsp-colors.nvim'
-  " git
-  Plug 'TimUntersberger/neogit'
-  Plug 'lewis6991/gitsigns.nvim'
-  Plug 'f-person/git-blame.nvim'
-  Plug 'sindrets/diffview.nvim'
-  " Color
-  Plug 'norcalli/nvim-colorizer.lua'
-  Plug 'p00f/nvim-ts-rainbow'
-  " Plug 'rafamadriz/neon'
-  Plug 'morhetz/gruvbox'
-  Plug 'hoob3rt/lualine.nvim'
-  " Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-  Plug 'dracula/vim', { 'as': 'dracula' }
-  Plug 'maxmellon/vim-jsx-pretty'
 endif
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
+Plug 'folke/todo-comments.nvim'
+Plug 'windwp/nvim-autopairs'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'numToStr/Comment.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-emoji'
+Plug 'ray-x/cmp-treesitter'
+Plug 'github/copilot.vim'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'onsails/lspkind-nvim'
+Plug 'tpope/vim-surround'
+Plug 'simrat39/symbols-outline.nvim'
+Plug 'mattn/emmet-vim'
+Plug 'mhinz/vim-startify'
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'nvim-telescope/telescope-ghq.nvim'
+
+" LSP
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'folke/trouble.nvim'
+Plug 'ray-x/lsp_signature.nvim'
+Plug 'neovim/nvim-lspconfig'
+" Plug 'glepnir/lspsaga.nvim'
+Plug 'tami5/lspsaga.nvim'
+Plug 'folke/lsp-colors.nvim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'Pocco81/DAPInstall.nvim'
+Plug 'theHamsta/nvim-dap-virtual-text'
+" git
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'f-person/git-blame.nvim'
+Plug 'tpope/vim-fugitive'
+" Color
+Plug 'norcalli/nvim-colorizer.lua'
+Plug 'p00f/nvim-ts-rainbow'
+Plug 'morhetz/gruvbox'
+Plug 'hoob3rt/lualine.nvim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'martinda/Jenkinsfile-vim-syntax'
 
 call plug#end()
 
@@ -193,15 +195,11 @@ call plug#end()
 let g:gruvbox_transparent_bg=1
 " true color
 if exists("&termguicolors") && exists("&winblend")
-  syntax enable
   set termguicolors
   set winblend=30
-  set wildoptions=pum
   set pumblend=30
   " colorscheme dracula
   colorscheme gruvbox
-  " colorscheme neon
-  set background=dark
   " background transparent
   autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
   " highlight Normal guibg=none
@@ -209,26 +207,12 @@ if exists("&termguicolors") && exists("&winblend")
 endif
 "}}}
 
-" Set terminal "{{{
-" ---------------------------------------------------------------------
-" turn terminal to normal mode with escape
-tnoremap <Esc> <C-\><C-n>
-" start terminal in insert mode
-au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-" open terminal on ctrl+n
-function! OpenTerminal()
-  split term://zsh
-  resize 15
-endfunction
-nnoremap <c-n> :call OpenTerminal()<CR>
-"}}}
-
 " indent_blankline "{{{
 " ---------------------------------------------------------------------
-" let g:indent_blankline_char="│"
-highlight IndentBlanklineChar guifg=#5e5e5e gui=nocombine
+let g:indent_blankline_char = '|'
 lua << EOF
 vim.opt.termguicolors = true
+vim.opt.list = true
 
 require("indent_blankline").setup {
     space_char_blankline = " ",
@@ -240,6 +224,27 @@ EOF
 " emmet "{{{
 " ---------------------------------------------------------------------
 let g:user_emmet_expandabbr_key='<c-t>'
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+"}}}
+
+
+" FixCursorHold.nvim {{{
+" ---------------------------------------------------------------------
+let g:cursorhold_updatetime = 100
+"}}}
+
+" Comment {{{
+" ---------------------------------------------------------------------
+lua require('Comment').setup()
+"}}}
+
+" dad bod SQL {{{
+nnoremap <silent> <leader>bu :DBUIToggle<CR>
+nnoremap <silent> <leader>bf :DBUIFindBuffer<CR>
+nnoremap <silent> <leader>br :DBUIRenameBuffer<CR>
+nnoremap <silent> <leader>bl :DBUILastQueryInfo<CR>
+let g:db_ui_save_location = '~/.config/db_ui'
 "}}}
 
 " symbols-outline "{{{
@@ -282,11 +287,10 @@ nnoremap <silent> <A-c> :BufferClose<CR>
 " Setup plugin "{{{
 " ---------------------------------------------------------------------
 lua << EOF
-require('gitsigns').setup()
+require('gitsigns').setup{}
 require('nvim-web-devicons').setup{}
 require('todo-comments').setup{}
 require('colorizer').setup()
-require('neogit').setup{}
 EOF
 "}}}
 "
@@ -322,14 +326,6 @@ vnoremap <silent> # :<C-U>
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 
-"-----------------------------
-" Tabs
-
-" Open current directory
-nmap te :tabedit 
-nmap <S-Tab> :tabprev<Return>
-nmap <Tab> :tabnext<Return>
-
 "------------------------------
 " Windows
 
@@ -338,10 +334,6 @@ nmap sp :split<Return><C-w>w
 nmap sv :vsplit<Return><C-w>w
 " Move window
 nmap <Space> <C-w>w
-map s<left> <C-w>h
-map s<up> <C-w>k
-map s<down> <C-w>j
-map s<right> <C-w>l
 map sh <C-w>h
 map sk <C-w>k
 map sj <C-w>j
@@ -381,7 +373,7 @@ local on_attach = function(client, bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  -- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
@@ -390,7 +382,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   -- buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   -- buf_set_keymap('n', '<S-C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
@@ -455,6 +447,25 @@ end
 
 
 local function diag(server,config)
+
+    -- if server == "yamlls" then
+    --   config.settings = {
+    --     yaml = {
+    --       schemas = { kubernetes = "globPattern" },
+    --       }
+    --     }
+    -- end
+
+    if server == "intelephense" then
+      config.settings = {
+        intelephense = {
+          format = {
+            enable = false
+            }
+        }
+      }
+    end
+
 
     if server == "diagnosticls" then
 
@@ -543,7 +554,7 @@ do
   local default_handler = vim.lsp.handlers[method]
   vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,config)
       default_handler(err, method, result, client_id, bufnr, config)
-      local diagnostics = vim.lsp.diagnostic.get_all()
+      local diagnostics = vim.diagnostic.get()
       local qflist = {}
       for bufnr, diagnostic in pairs(diagnostics) do
           for _, d in ipairs(diagnostic) do
@@ -554,37 +565,28 @@ do
               table.insert(qflist, d)
           end
       end
-      vim.lsp.util.set_qflist(qflist)
+      -- vim.lsp.util.set_qflist(qflist)
+      --vim.diagnostic.setqflist(qflist)
+      --vim.diagnostic.setloclist(qflist)
   end
 end
 
-local function setup_servers()
+-- lsp_installer
+local lsp_installer = require("nvim-lsp-installer")
 
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
-
-  for _, server in pairs(servers) do
-
+lsp_installer.on_server_ready(function(server)
+    local opts = {}
     local config = make_config()
-    diag(server,config)
-
-    nvim_lsp[server].setup(config)
-  end
-end
-
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
+    diag(server, config)
+    server:setup(config)
+    -- server:setup(opts)
+end)
 
 EOF
 
 lua << EOF
 require "lsp_signature".setup({
-  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  bind = true,
   handler_opts = {
     border = "single"
   }
@@ -592,27 +594,71 @@ require "lsp_signature".setup({
 EOF
 
 lua << EOF
+-- nvim dap
+local dap_install = require("dap-install")
+
+dap_install.config("php", {
+  configurations = {
+    {
+      type = 'php',
+      request = 'launch',
+      name = 'Listen for Xdebug',
+      port = 10001,
+      log = true,
+      -- serverSourceRoot = '/var/www/html/',
+      -- localSourceRoot = '/Users/ts-dongkyu.kim/Projects/corp-172/htdocs/',
+    }
+  }
+})
+
+require("dapui").setup()
+require("nvim-dap-virtual-text").setup()
+
+EOF
+
+nnoremap <leader>dn :lua require"dap".continue()<CR>
+nnoremap <leader>dc :lua require"dap".close()<CR>
+nnoremap <leader>dv :lua require"dap".step_over()<CR>
+nnoremap <leader>di :lua require"dap".step_into()<CR>
+nnoremap <leader>do :lua require"dap".step_out()<CR>
+nnoremap <leader>dt :lua require"dap".toggle_breakpoint()<CR>
+nnoremap <leader>dp :lua require"dap.ui.variables".scopes()<CR>
+nnoremap <leader>dh :lua require"dap.ui.variables".hover()<CR>
+nnoremap <leader>du :lua require"dap.ui.variables".visual_hover()<CR>
+nnoremap <leader>dw :lua require"dap.ui.widgets".hover()<CR>
+nnoremap <leader>df :lua local widgets=require'dap.ui.widgets';widgets.centered_float(widgets.scopes)<CR>
+nnoremap <leader>ds :lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>
+nnoremap <leader>dm :lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>
+nnoremap <leader>dr :lua require"dap".repl.open()<CR>
+nnoremap <leader>dl :lua require"dap".repl.run_last()<CR>
+
+nnoremap <leader>dp :lua require('dapui').toggle()<CR>
+
+lua << EOF
 local saga = require 'lspsaga'
 
 saga.init_lsp_saga {
-  -- error_sign = '✘',
-  error_sign = '',
-  warn_sign = '',
-  hint_sign = '',
-  infor_sign = '',
+  -- error_sign = '‚úò',
+  error_sign = 'ÔÜà',
+  warn_sign = 'ÔÅ±',
+  hint_sign = 'Ô†µ',
+  infor_sign = 'Ôëâ',
   border_style = "round",
 }
 EOF
 
 nnoremap <silent> <C-j> :Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> <C-k> :Lspsaga diagnostic_jump_prev<CR>
-nnoremap <silent>K :Lspsaga hover_doc<CR>
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
 nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
 nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-nnoremap <silent>gs :Lspsaga signature_help<CR>
+nnoremap <silent><leader>ca <cmd>lua require('lspsaga.codeaction').code_action()<CR>
+vnoremap <silent><leader>ca :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
+nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
 nnoremap <silent>gh :Lspsaga lsp_finder<CR>
-nnoremap <silent>gd :Lspsaga preview_definition<CR>
-nnoremap <silent>rn :Lspsaga rename<CR>
+nnoremap <silent> pd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+nnoremap <silent>gr <cmd>lua require('lspsaga.rename').rename()<CR>
+nnoremap <silent><leader>cd :Lspsaga show_line_diagnostics<CR>
 nnoremap <silent><leader>ca :Lspsaga code_action<CR>
 vnoremap <silent><leader>ca :<C-U>Lspsaga range_code_action<CR>
 
@@ -621,32 +667,15 @@ require('lualine').setup {
   options = {
     icons_enabled = true,
     theme = 'auto',
-    -- section_separators = {'', ''},
-    -- component_separators = {'', ''},
-    disabled_filetypes = {}
   },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch'},
-    lualine_c = {'filename'},
-    lualine_x = {
-      { 'diagnostics', sources = {"nvim_lsp"}, symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '} },
-      'encoding',
-      'filetype'
-    },
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  -- extensions = {'fugitive'}
+sections = {
+  lualine_c = {
+    {
+        'filename',
+        path = 2,            -- 0 = just filename, 1 = relative path, 2 = absolute path
+    }
+    }
+  }
 }
 EOF
 
@@ -656,6 +685,7 @@ local actions = require('telescope.actions')
 ------------------------------
 require('telescope').setup{
   defaults = {
+    prompt_prefix = "$ ",
     mappings = {
       n = {
         ["q"] = actions.close
@@ -663,18 +693,22 @@ require('telescope').setup{
     },
   }
 }
+require('telescope').load_extension('fzf')
+require'telescope'.load_extension('ghq')
 EOF
 " telescope keymap
-nnoremap <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>g <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>b <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>h <cmd>lua require('telescope.builtin').command_history()<cr>
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fi <cmd>lua require('telescope.builtin').command_history()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
 
   highlight = {
     enable = true,
+    additional_vim_regex_highlighting = true,
     -- disable = {"dockerfile"},
   },
 
@@ -775,13 +809,13 @@ cmp.setup {
   },
 
   documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    border = { "‚ï≠", "‚îÄ", "‚ïÆ", "‚îÇ", "‚ïØ", "‚îÄ", "‚ï∞", "‚îÇ" },
   },
 
   sources = {
     { name = 'luasnip' },
     { name = "nvim_lsp" },
-    { name = "buffer" },
+    { name = "buffer", keysword_length = 5 },
     { name = "path" },
     { name = "emoji" },
     { name = 'treesitter' },
@@ -810,10 +844,10 @@ lua << EOF
     auto_close = true,
     }
   local signs = {
-    Error = "",
-    Warning = "",
-    Hint = "",
-    Information = ""
+    Error = "ÔÜà",
+    Warning = "ÔÅ±",
+    Hint = "Ô†µ",
+    Information = "Ôëâ"
   }
   for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
