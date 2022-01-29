@@ -1,0 +1,42 @@
+[user]
+	name = 
+	email = 
+[core]
+  excludesfile = /Users/xxx/.gitignore_global
+	; pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = delta
+	edit = nvim
+	autoCRLF = false
+[ghq]
+	root = ~/Projects
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+  navigate = true
+[merge]
+    conflictstyle = diff3
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+
+[diff]
+	tool = vimdiff
+  colorMoved = default
+[diff "tool"]
+	prompt = false
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[mergetool]
+	path = nvim
