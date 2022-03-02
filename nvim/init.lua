@@ -20,7 +20,7 @@ require('packer').startup(function(use)
   -- UI to select things (files, grep results, open buffers...)
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-  -- use 'mjlbach/dracula.nvim' -- Theme inspired by Atom
+  use 'mjlbach/onedark.nvim' -- Theme inspired by Atom
   use { 'Mofiqul/dracula.nvim', as = 'dracula' }
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   -- Add indentation guides even on blank lines
@@ -71,10 +71,10 @@ vim.g.loaded_matchit = 1
 vim.g.loaded_matchparen = 1
 vim.g.loaded_logiPat = 1
 vim.g.loaded_rrhelper = 1
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrwSettings = 1
-vim.g.loaded_netrwFileHandlers = 1
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrwSettings = 1
+-- vim.g.loaded_netrwFileHandlers = 1
 
 -- Copy to clipboard
 vim.o.clipboard = 'unnamedplus'
@@ -108,7 +108,7 @@ vim.wo.signcolumn = 'yes'
 
 --Set colorscheme
 vim.o.termguicolors = true
-vim.cmd [[colorscheme dracula]]
+vim.cmd [[colorscheme onedark]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -123,7 +123,7 @@ vim.opt.expandtab = true
 require('lualine').setup {
   options = {
     -- icons_enabled = false,
-    theme = 'dracula',
+    theme = 'onedark',
     -- component_separators = '|',
     -- section_separators = '',
   },
@@ -161,13 +161,35 @@ vim.g.indent_blankline_show_trailing_blankline_indent = false
 
 -- Gitsigns
 require('gitsigns').setup {
-  -- signs = {
-  --   add = { text = '+' },
-  --   change = { text = '~' },
-  --   delete = { text = '_' },
-  --   topdelete = { text = '‚Äæ' },
-  --   changedelete = { text = '~' },
-  -- },
+  on_attach = function(bufnr)
+    local function map(mode, lhs, rhs, opts)
+      opts = vim.tbl_extend('force', { noremap = true, silent = true }, opts or {})
+      vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    end
+
+    -- Navigation
+    map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+    map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
+
+    -- Actions
+    map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map('v', '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map('n', '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('v', '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hS', '<cmd>Gitsigns stage_buffer<CR>')
+    map('n', '<leader>hu', '<cmd>Gitsigns undo_stage_hunk<CR>')
+    map('n', '<leader>hR', '<cmd>Gitsigns reset_buffer<CR>')
+    map('n', '<leader>hp', '<cmd>Gitsigns preview_hunk<CR>')
+    map('n', '<leader>hb', '<cmd>lua require"gitsigns".blame_line{full=true}<CR>')
+    map('n', '<leader>tb', '<cmd>Gitsigns toggle_current_line_blame<CR>')
+    map('n', '<leader>hd', '<cmd>Gitsigns diffthis<CR>')
+    map('n', '<leader>hD', '<cmd>lua require"gitsigns".diffthis("~")<CR>')
+    map('n', '<leader>td', '<cmd>Gitsigns toggle_deleted<CR>')
+
+    -- Text object
+    map('o', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+    map('x', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end,
 }
 
 -- Telescope
@@ -307,10 +329,20 @@ local enhance_server_opts = {
       },
     }
   end,
+
+  ['tsserver'] = function(opts)
+    opts.on_attach = function(client, _)
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+      local ts_utils = require 'nvim-lsp-ts-utils'
+      ts_utils.setup {}
+      ts_utils.setup_client(client)
+    end
+  end,
 }
 
 -- Golang imports
-function Org_imports(wait_ms)
+function _GoImports(wait_ms)
   local params = vim.lsp.util.make_range_params()
   params.context = { only = { 'source.organizeImports' } }
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, wait_ms)
@@ -325,9 +357,7 @@ function Org_imports(wait_ms)
   end
 end
 
-vim.cmd [[
-	autocmd BufWritePre *.go :silent! lua Org_imports(3000)
-]]
+vim.cmd [[ autocmd BufWritePre *.go :silent! lua _GoImports(3000) ]]
 
 -- nvim-lsp-installer setup
 local lsp_installer = require 'nvim-lsp-installer'
@@ -337,16 +367,6 @@ lsp_installer.on_server_ready(function(server)
     capabilities = capabilities,
     on_attach = on_attach,
   }
-
-  if server.name == 'tsserver' then
-    opts.on_attach = function(client, _)
-      client.resolved_capabilities.document_formatting = false
-      client.resolved_capabilities.document_range_formatting = false
-      local ts_utils = require 'nvim-lsp-ts-utils'
-      ts_utils.setup {}
-      ts_utils.setup_client(client)
-    end
-  end
 
   if enhance_server_opts[server.name] then
     enhance_server_opts[server.name](opts)
@@ -414,6 +434,6 @@ cmp.setup {
 require('null-ls').setup {
   sources = {
     require('null-ls').builtins.formatting.stylua,
-    require('null-ls').builtins.formatting.prettier,
+    -- require('null-ls').builtins.formatting.prettier,
   },
 }
