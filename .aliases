@@ -1,32 +1,37 @@
-#!/usr/bin/env bash
-
 # close telnet C-] & quit.
 alias starwars="telnet towel.blinkenlights.nl"
 
-# open chrome
+# mac applications
 alias chrome='open -a /Applications/Google\ Chrome.app --args -incognito'
-
-# open firefox
+alias chrome='open -a /Applications/Google\ Chrome\ Canary.app --args -incognito'
 alias firefox='open -a /Applications/Firefox.app'
-
-# open safari
 alias safari='open -a /Applications/Safari.app'
 
-#alias java
-alias javac='javac -J-Dfile.encoding=UTF8'
-
-#alias diff
+# shell
 alias diff='colordiff'
-
-#alias less
 alias less='less -R'
-
-#alias ls
 alias ls='ls -G'
+alias gq='cd $(ghq list -p | fzf)'
+alias f='fzf --preview "bat --color=always --style=header,grid --line-range :100 {}"'
+alias batd="bat -l diff"
+alias batf='bat $(fzf)'
+alias rgn='rg -S --hidden --no-heading'
 
-#alias ls
+# exa
 alias exa='exa -ahl'
+alias exat="exa -T --ignore-glob '.git|node_modules'"
 
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+# git
+alias g="git"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+alias gla="git log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+
+#k8s
+alias k='kubectl'
+
+#docker
+alias dk='docker'
+
+#tmux
+alias tn='tmux new'
+alias ta='tmux attach'

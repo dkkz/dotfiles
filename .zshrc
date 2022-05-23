@@ -32,6 +32,9 @@ source $HOME/.aliases
 export PATH=/usr/local/bin:$PATH
 export PATH=$PATH:"/opt/local/bin:/opt/local/sbin"
 
+# brew
+export PATH="/usr/local/sbin:$PATH"
+
 if [ -d "/usr/local/opt/ruby/bin" ]; then
   export PATH=/usr/local/opt/ruby/bin:$PATH
   export PATH=`gem environment gemdir`/bin:$PATH
@@ -49,9 +52,6 @@ fi
 # nvm
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-# for tmux vim error
-export TERM="xterm-256color"
-#export TERM="screen-256color"
 
 # ITERM 
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
@@ -128,7 +128,7 @@ zle -N fzf-select-snippet
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})‚Ä¶%f"
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
     command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
         print -P "%F{33} %F{34}Installation successful.%f%b" || \
@@ -149,15 +149,13 @@ zinit wait lucid for \
 
 zinit wait lucid is-snippet as"completion" for \
   OMZP::docker/_docker \
-  OMZP::docker-compose/_docker-compose \
-  OMZP::rust/_rust \
-  OMZP::cargo \
-  OMZP::rustup
 
 zinit is-snippet for \
   OMZL::completion.zsh \
   OMZL::key-bindings.zsh \
   OMZL::directories.zsh \
+  OMZP::kubectl \
+  OMZP::rust \
   https://github.com/aws/aws-cli/blob/v2/bin/aws_zsh_completer.sh
 
 zinit cdclear -q
@@ -168,7 +166,7 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
 
-autoload -Uz compinit && compinit
+#autoload -Uz compinit && compinit - comment out from 2022/2/22
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=1 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
@@ -183,6 +181,8 @@ setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt hist_verify
 setopt hist_reduce_blanks
+
+autoload colors && colors
 
 # bindkey -v
 # bindkey '^a' beginning-of-line
