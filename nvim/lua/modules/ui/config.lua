@@ -8,8 +8,8 @@ function config.gruvbox()
   require('gruvbox').setup {
     transparent_mode = true,
   }
-  vim.o.background = 'dark'
-  vim.api.nvim_command [[colorscheme gruvbox]]
+  -- vim.o.background = 'dark'
+  -- vim.api.nvim_command [[colorscheme gruvbox]]
 end
 
 -- function config.nord()
@@ -124,7 +124,6 @@ function config.indent_blankline()
       'log',
       'fugitive',
       'gitcommit',
-      'packer',
       'vimwiki',
       'markdown',
       'json',

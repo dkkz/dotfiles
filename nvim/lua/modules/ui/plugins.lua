@@ -47,7 +47,6 @@ ui['folke/noice.nvim'] = {
   lazy = true,
   event = { 'BufRead', 'BufNewFile', 'InsertEnter', 'CmdlineEnter' },
   module = { 'noice' },
-
   config = conf.noice,
   dependencies = {
     { 'MunifTanjim/nui.nvim', lazy = true },

@@ -19,7 +19,7 @@ completion['hrsh7th/nvim-cmp'] = {
   event = 'InsertEnter',
   dependencies = {
     { 'L3MON4D3/LuaSnip', config = conf.luasnip, dependencies = { 'rafamadriz/friendly-snippets' } },
-    { 'onsails/lspkind.nvim', module = 'lspkind' },
+    { 'onsails/lspkind.nvim' },
     { 'saadparwaiz1/cmp_luasnip' },
     { 'hrsh7th/cmp-nvim-lsp' },
     { 'hrsh7th/cmp-path' },
@@ -37,7 +37,7 @@ completion['windwp/nvim-autopairs'] = {
 }
 
 completion['jose-elias-alvarez/typescript.nvim'] = {
-  lazy = true,
+  -- lazy = true,
   ft = {
     'typescript',
     'javascript',

@@ -1,7 +1,7 @@
 local tools = {}
 local conf = require 'modules.tools.config'
 
-tools['nvim-lua/plenary.nvim'] = { lazy = true, module = 'plenary' }
+tools['nvim-lua/plenary.nvim'] = { lazy = true }
 tools['nvim-telescope/telescope.nvim'] = {
   lazy = true,
   module = 'telescope',
@@ -21,7 +21,8 @@ tools['nvim-telescope/telescope.nvim'] = {
 tools['jose-elias-alvarez/null-ls.nvim'] = {
   lazy = true,
   config = conf.null_ls,
-  event = { 'FocusLost', 'CursorHold' },
+  event = { 'BufReadPost', 'BufAdd', 'BufNewFile' },
+  -- event = { 'FocusLost', 'CursorHold' },
   dependencies = { 'nvim-lua/plenary.nvim' },
 }
 

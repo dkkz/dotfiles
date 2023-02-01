@@ -64,7 +64,7 @@ function config.telescope()
         theme = 'ivy',
         -- disables netrw and use telescope-file-browser in its place
         hijack_netrw = true,
-
+        path = '%:p:h',
         cwd = telescope_buffer_dir(),
         mappings = {
           ['i'] = {
@@ -144,6 +144,7 @@ function config.null_ls()
     sources = {
       require('null-ls').builtins.formatting.stylua,
       require('null-ls').builtins.formatting.yamlfmt,
+      require('null-ls').builtins.formatting.rustfmt,
       require('null-ls').builtins.formatting.goimports,
       require('null-ls').builtins.diagnostics.tidy,
       require('null-ls').builtins.formatting.prettier.with {

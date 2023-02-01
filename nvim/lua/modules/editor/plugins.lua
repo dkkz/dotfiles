@@ -37,4 +37,10 @@ editor['tpope/vim-fugitive'] = { lazy = true, cmd = { 'Git', 'G' } }
 
 editor['tpope/vim-surround'] = { lazy = true, event = { 'CursorMoved' } }
 
+editor['LunarVim/bigfile.nvim'] = {
+  lazy = false,
+  config = conf.bigfile,
+  cond = require('core.settings').load_big_files_faster,
+}
+
 return editor

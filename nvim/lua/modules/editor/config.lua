@@ -124,7 +124,46 @@ function config.comment()
 end
 
 function config.nvim_colorizer()
-  require('colorizer').setup()
+  require('colorizer').setup {
+    'css',
+    'javascript',
+    html = {
+      mode = 'foreground',
+    },
+  }
+end
+
+function config.bigfile()
+  local ftdetect = {
+    name = 'ftdetect',
+    opts = { defer = true },
+    disable = function()
+      vim.api.nvim_set_option_value('filetype', 'disabled_big_file', { scope = 'local' })
+    end,
+  }
+
+  local cmp = {
+    name = 'nvim-cmp',
+    opts = { defer = true },
+    disable = function()
+      require('cmp').setup.buffer { enabled = false }
+    end,
+  }
+
+  require('bigfile').config {
+    filesize = 1, -- size of the file in MiB
+    pattern = { '*' }, -- autocmd pattern
+    features = { -- features to disable
+      'indent_blankline',
+      'lsp',
+      'illuminate',
+      'treesitter',
+      'syntax',
+      'vimopts',
+      ftdetect,
+      cmp,
+    },
+  }
 end
 
 return config
